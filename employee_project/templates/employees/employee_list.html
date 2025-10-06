@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Employee Manager</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #3b82f6;
+      --secondary: #0891b2;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #ea580c;
+      --dark: #1e293b;
+      --darker: #0f172a;
+      --light: #f8fafc;
+      --lighter: #ffffff;
+      --gray: #64748b;
+      --gray-light: #94a3b8;
+      --border: #e2e8f0;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --gradient: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+      --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 50%, #dbeafe 100%);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .navbar {
+      background: var(--lighter);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: slideDown 0.5s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .navbar-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--darker);
+      letter-spacing: -0.5px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--light);
+      border-color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+      animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .search-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.875rem 1.25rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      background: var(--light);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      background: white;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    thead {
+      background: var(--light);
+      border-bottom: 2px solid var(--border);
+    }
+
+    thead th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.8px;
+      color: var(--gray);
+    }
+
+    thead th:first-child {
+      border-top-left-radius: 12px;
+    }
+
+    thead th:last-child {
+      border-top-right-radius: 12px;
+    }
+
+    tbody tr {
+      background: white;
+      transition: all 0.2s ease;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    tbody tr:hover {
+      background: #f0f9ff;
+    }
+
+    tbody td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--dark);
+    }
+
+    tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 12px;
+    }
+
+    tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 12px;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: all 0.3s ease;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      background: var(--light);
+      color: var(--dark);
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-label.required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      background: var(--light);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      background: white;
+    }
+
+    .form-control:invalid {
+      border-color: var(--danger);
+    }
+
+    .modal-footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .info-text {
+      color: var(--gray);
+      font-size: 0.875rem;
+    }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--gray);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .header-actions {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      .search-container {
+        flex-direction: column;
+      }
+
+      table {
+        font-size: 0.875rem;
+      }
+
+      thead th,
+      tbody td {
+        padding: 0.75rem 0.5rem;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+    }
+
+    .spinner {
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: var(--light);
+      color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      z-index: 3000;
+      animation: slideInRight 0.3s ease;
+      min-width: 300px;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.active {
+      display: flex;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-content">
+      <div class="logo">Employee Manager</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/api/employees/">API</a></li>
+        <li><a href="/admin/">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <h1>Employee Management</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline" id="downloadCsv">
+          <span>📥</span> Download CSV
+        </button>
+        <button class="btn btn-success" id="sendEmailBtn">
+          <span>✉️</span> Send Email
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="search-container">
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search by name, email, position...">
+        <button class="btn btn-primary" id="addEmployeeBtn">
+          <span>➕</span> Add Employee
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table id="employeeTable">
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="checkbox" id="selectAll"></th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Position</th>
+              <th>Department</th>
+              <th>Joining Date</th>
+              <th>Salary</th>
+              <th>Mobile</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="employeeTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div id="listMessage" class="info-text"></div>
+    </div>
+  </div>
+
+  <!-- Employee Modal -->
+  <div class="modal" id="employeeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Employee</h2>
+        <button class="close-btn" id="closeEmployeeModal">&times;</button>
+      </div>
+      <form id="employeeForm">
+        <div class="modal-body">
+          <input type="hidden" id="empId">
+
+          <div class="form-group">
+            <label class="form-label required">Name</label>
+            <input type="text" class="form-control" id="name" required maxlength="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Email</label>
+            <input type="email" class="form-control" id="email" required maxlength="254">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Position</label>
+            <input type="text" class="form-control" id="position" required maxlength="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Department</label>
+            <input type="text" class="form-control" id="department" required maxlength="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Joining Date</label>
+            <input type="date" class="form-control" id="joining_date" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Salary</label>
+            <input type="number" class="form-control" id="salary" min="0" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Mobile</label>
+            <input type="tel" class="form-control" id="mobile_number" pattern="[0-9]{10}" required>
+          </div>
+
+          <div id="formError" class="error-message"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelEmployeeBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveBtn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Email Modal -->
+  <div class="modal" id="emailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Send Email to Selected</h2>
+        <button class="close-btn" id="closeEmailModal">&times;</button>
+      </div>
+      <form id="emailForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label required">Subject</label>
+            <input type="text" class="form-control" id="emailSubject" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Message</label>
+            <textarea class="form-control" id="emailMessage" rows="5" required></textarea>
+          </div>
+
+          <div id="emailFormError" class="error-message"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelEmailBtn">Cancel</button>
+          <button type="submit" class="btn btn-success">Send Email</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <span id="toastIcon"></span>
+    <span id="toastMessage"></span>
+  </div>
+
+  <script>
+    const API_BASE = '/api/employees/';
+    let employees = [];
+    let currentEmployeeId = null;
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let c of cookies) {
+          const cookie = c.trim();
+          if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastMessage.textContent = message;
+      toastIcon.textContent = type === 'success' ? '✓' : '✕';
+      toast.className = `toast ${type} active`;
+
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    async function fetchEmployees() {
+      try {
+        const res = await fetch(API_BASE);
+        employees = await res.json();
+        renderTable(employees);
+      } catch (error) {
+        showToast('Failed to fetch employees', 'error');
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('employeeTableBody');
+      tbody.innerHTML = '';
+
+      if (!data.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9">
+              <div class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <p>No employees found. Add your first employee to get started!</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        document.getElementById('listMessage').textContent = '';
+        return;
+      }
+
+      document.getElementById('listMessage').textContent = `Showing ${data.length} employee(s)`;
+
+      data.forEach((emp, index) => {
+        const tr = document.createElement('tr');
+        tr.style.animationDelay = `${index * 0.05}s`;
+        tr.innerHTML = `
+          <td><input type="checkbox" class="checkbox selectRow" data-id="${emp.id}"></td>
+          <td>${escapeHtml(emp.name)}</td>
+          <td>${escapeHtml(emp.email)}</td>
+          <td>${escapeHtml(emp.position)}</td>
+          <td>${escapeHtml(emp.department)}</td>
+          <td>${escapeHtml(emp.joining_date)}</td>
+          <td>${parseFloat(emp.salary).toLocaleString()}</td>
+          <td>${escapeHtml(emp.mobile_number)}</td>
+          <td>
+            <div class="actions">
+              <button class="btn btn-sm btn-primary" onclick="editEmployee(${emp.id})">Edit</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteEmployee(${emp.id})">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openAddModal() {
+      document.getElementById('modalTitle').textContent = 'Add Employee';
+      document.getElementById('employeeForm').reset();
+      document.getElementById('empId').value = '';
+      document.getElementById('formError').textContent = '';
+      currentEmployeeId = null;
+      openModal('employeeModal');
+    }
+
+    async function editEmployee(id) {
+      try {
+        const res = await fetch(`${API_BASE}${id}/`);
+        if (!res.ok) throw new Error('Failed to fetch employee');
+
+        const emp = await res.json();
+        document.getElementById('modalTitle').textContent = 'Edit Employee';
+        document.getElementById('empId').value = emp.id;
+        document.getElementById('name').value = emp.name;
+        document.getElementById('email').value = emp.email;
+        document.getElementById('position').value = emp.position;
+        document.getElementById('department').value = emp.department || '';
+        document.getElementById('joining_date').value = emp.joining_date || '';
+        document.getElementById('salary').value = emp.salary || '';
+        document.getElementById('mobile_number').value = emp.mobile_number || '';
+        document.getElementById('formError').textContent = '';
+        currentEmployeeId = id;
+        openModal('employeeModal');
+      } catch (error) {
+        showToast('Failed to load employee data', 'error');
+      }
+    }
+
+    async function deleteEmployee(id) {
+      if (!confirm('Are you sure you want to delete this employee?')) return;
+
+      try {
+        const res = await fetch(`${API_BASE}${id}/`, {
+          method: 'DELETE',
+          headers: { 'X-CSRFToken': csrftoken }
+        });
+
+        if (res.ok || res.status === 204) {
+          showToast('Employee deleted successfully');
+          fetchEmployees();
+        } else {
+          throw new Error('Failed to delete');
+        }
+      } catch (error) {
+        showToast('Failed to delete employee', 'error');
+      }
+    }
+
+    document.getElementById('employeeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        position: document.getElementById('position').value.trim(),
+        department: document.getElementById('department').value.trim(),
+        joining_date: document.getElementById('joining_date').value,
+        salary: parseFloat(document.getElementById('salary').value),
+        mobile_number: document.getElementById('mobile_number').value.trim(),
+      };
+
+      try {
+        const url = currentEmployeeId ? `${API_BASE}${currentEmployeeId}/` : API_BASE;
+        const method = currentEmployeeId ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          closeModal('employeeModal');
+          showToast(`Employee ${currentEmployeeId ? 'updated' : 'added'} successfully`);
+          fetchEmployees();
+        } else {
+          const data = await res.json();
+          document.getElementById('formError').textContent = JSON.stringify(data);
+        }
+      } catch (error) {
+        document.getElementById('formError').textContent = 'An error occurred';
+      }
+    });
+
+    document.getElementById('downloadCsv').addEventListener('click', async () => {
+      try {
+        const res = await fetch(`${API_BASE}send_csv/`);
+        if (!res.ok) throw new Error('Failed to download CSV');
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'employees.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast('CSV downloaded successfully');
+      } catch (error) {
+        showToast('Failed to download CSV', 'error');
+      }
+    });
+
+    document.getElementById('sendEmailBtn').addEventListener('click', () => {
+      const selectedIds = getSelectedIds();
+      if (!selectedIds.length) {
+        showToast('Please select at least one employee', 'error');
+        return;
+      }
+      document.getElementById('emailForm').reset();
+      document.getElementById('emailFormError').textContent = '';
+      openModal('emailModal');
+    });
+
+    document.getElementById('emailForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        employee_ids: getSelectedIds(),
+        subject: document.getElementById('emailSubject').value.trim(),
+        message: document.getElementById('emailMessage').value.trim(),
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}send_email/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          closeModal('emailModal');
+          showToast('Emails sent successfully');
+        } else {
+          const data = await res.json();
+          document.getElementById('emailFormError').textContent = JSON.stringify(data);
+        }
+      } catch (error) {
+        document.getElementById('emailFormError').textContent = 'Failed to send emails';
+      }
+    });
+
+    function getSelectedIds() {
+      return Array.from(document.querySelectorAll('.selectRow:checked'))
+        .map(cb => parseInt(cb.dataset.id));
+    }
+
+    document.getElementById('selectAll').addEventListener('change', (e) => {
+      document.querySelectorAll('.selectRow').forEach(cb => {
+        cb.checked = e.target.checked;
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = employees.filter(emp => {
+        return emp.name.toLowerCase().includes(term) ||
+               emp.email.toLowerCase().includes(term) ||
+               emp.position.toLowerCase().includes(term) ||
+               emp.department.toLowerCase().includes(term);
+      });
+      renderTable(filtered);
+    });
+
+    document.getElementById('addEmployeeBtn').addEventListener('click', openAddModal);
+    document.getElementById('closeEmployeeModal').addEventListener('click', () => closeModal('employeeModal'));
+    document.getElementById('cancelEmployeeBtn').addEventListener('click', () => closeModal('employeeModal'));
+    document.getElementById('closeEmailModal').addEventListener('click', () => closeModal('emailModal'));
+    document.getElementById('cancelEmailBtn').addEventListener('click', () => closeModal('emailModal'));
+
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        closeModal(e.target.id);
+      }
+    });
+
+    fetchEmployees();
+  </script>
+</body>
+</html>
