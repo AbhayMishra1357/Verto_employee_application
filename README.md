@@ -28,21 +28,11 @@ A **modern and full-featured CRUD (Create, Read, Update, Delete) application** t
 * Frontend **form validation**
 * Backend **unit tests** for API and business logic
 
----
-
-## 📸 Screenshots
-
-| Employee List                          | Add Employee Form                    |
-| -------------------------------------- | ------------------------------------ |
-| ![Employee List](screenshots/list.png) | ![Add Employee](screenshots/add.png) |
-
----
 
 ## 🏗️ Tech Stack
 
 * **Backend:** Django, Django REST Framework, SQLite
 * **Frontend:** HTML, CSS, JavaScript
-* **Email:** SMTP (Django email backend)
 * **Export:** CSV download
 
 ---
@@ -75,7 +65,7 @@ employee_project/
 
 ```bash
 git clone https://github.com/yourusername/employee-manager.git
-cd employee-manager
+cd employee_project
 ```
 
 ### 2️⃣ Setup Virtual Environment
@@ -145,17 +135,6 @@ python manage.py runserver 0.0.0.0:8000
 http://<your-local-ip>:8000/
 ```
 
----
-
-## 🛠️ Testing
-
-Run backend tests:
-
-```bash
-python manage.py test employees
-```
-
----
 
 ## ✉️ Email Integration
 
@@ -177,7 +156,7 @@ EMAIL_HOST_PASSWORD = 'yourpassword'
 ## 📄 CSV Export
 
 * Click **“Download CSV”** on the frontend to export all employees.
-* CSV includes: `ID, Name, Email, Position, Created At, Updated At`.
+* CSV includes: `ID, Name, Email, Position, Created At, Updated At, Mobile number, department, joining date, Salary `.
 
 ---
 
@@ -208,5 +187,5 @@ MIT License © 2025 - Abhay Mishra
 
 **Abhay Mishra**
 
-* GitHub: [https://github.com/yourusername](https://github.com/yourusername)
-* LinkedIn: [https://www.linkedin.com/in/abhay-mishra](https://www.linkedin.com/in/abhay-mishra)
+* GitHub: [https://github.com/AbhayMishra1357](https://github.com/AbhayMishra1357)
+* LinkedIn: [https://www.linkedin.com/in/abhay-mishra-38607b294](https://www.linkedin.com/in/abhay-mishra-38607b294)
